@@ -52,13 +52,14 @@ public:
             head_ = 0;
             delete marker; // marker is the only element in the list
             marker = 0;
-          } else {
-            head_ = new Item<T>(marker->value(), marker->next());
+          } else { // Bug 4:
+            // head_ = new Item<T>(marker->value(), marker->next());
+            head_ = marker->next();
             delete marker;
             marker = 0;
           }
           return 0;
-        } else {
+        } else { // Bug 2:
           temp->next (marker->next());
           // delete temp;
           delete marker;
@@ -66,7 +67,7 @@ public:
           marker = 0;
           return 0;
         }
-      }
+      } // Bug 1:
       // marker = 0;  // reset the marker
       temp = marker;
       marker = marker->next();
@@ -86,12 +87,12 @@ public:
   }
 
 private:
-  void delete_nodes() {
+  void delete_nodes() { // Bug 3:
     Item<T> *marker = head_;
     while (marker != 0) {
-      Item<T> *temp = marker;
+      Item<T> *temp = marker->next();
       delete marker;
-      marker = temp->next();
+      marker = temp;
     }
   }
 
